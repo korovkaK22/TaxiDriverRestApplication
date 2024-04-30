@@ -12,7 +12,7 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="name" type="varchar(255)">
-                <constraints nullable="false"/>
+                <constraints nullable="false" unique="true"/>
             </column>
             <column name="country" type="varchar(255)">
                 <constraints nullable="false"/>
@@ -23,7 +23,7 @@
         </createTable>
     </changeSet>
 
-    <!-- Changeset for creating the 'taxi_drivers' table -->
+
     <changeSet id="v1-2" author="Andrii Sereda">
         <createTable tableName="taxi_drivers">
             <column name="id" type="serial">
