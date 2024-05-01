@@ -26,15 +26,18 @@ public class CompanyService {
 
     public Company addCompany(CompanyRequest company) {
         Company newCompany = new Company();
-        newCompany.setName(company.getName());
-        newCompany.setCountry(company.getCountry());
-        newCompany.setWorkingCarsAmount(company.getWorkingCarsAmount());
+        initCompanyFields(company, newCompany);
+        Company save = companyRepository.save(newCompany);
         log.debug("Company with name %s added".formatted(company.getName()));
-        return companyRepository.save(newCompany);
+        return save;
     }
 
     public Optional<Company> getCompany(Integer id) {
         return companyRepository.findById(id);
+    }
+
+    public boolean isCompanyExist(Integer id) {
+        return companyRepository.existsById(id);
     }
 
     public Company putCompany(Integer id, CompanyRequest companyRequest) {
@@ -49,16 +52,19 @@ public class CompanyService {
         }
 
         companyFromDb.setId(id);
-        companyFromDb.setName(companyRequest.getName());
-        companyFromDb.setCountry(companyRequest.getCountry());
-        companyFromDb.setWorkingCarsAmount(companyRequest.getWorkingCarsAmount());
+        initCompanyFields(companyRequest, companyFromDb);
+        Company save = companyRepository.save(companyFromDb);
         log.debug("Company with id %d updated".formatted(id));
-        return companyRepository.save(companyFromDb);
+        return save;
     }
 
     public void deleteCompany(Integer id) {
         companyRepository.deleteById(id);
         log.debug("Company with id %d deleted".formatted(id));
     }
-
+    private void initCompanyFields(CompanyRequest companyRequest, Company company) {
+        company.setName(companyRequest.getName());
+        company.setCountry(companyRequest.getCountry());
+        company.setWorkingCarsAmount(companyRequest.getWorkingCarsAmount());
+    }
 }

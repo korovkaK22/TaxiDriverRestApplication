@@ -25,7 +25,7 @@ public class CompanyController {
 
     @GetMapping()
     public ResponseEntity<List<CompanyResponse>> getAllCompanies() {
-       return  ResponseEntity.ok(companyService.getAllCompanies().stream().map(CompanyResponse::new).toList());
+        return ResponseEntity.ok(companyService.getAllCompanies().stream().map(CompanyResponse::new).toList());
     }
 
     @PostMapping()
@@ -36,7 +36,11 @@ public class CompanyController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CompanyResponse> putCompany(@PathVariable Integer id, @RequestBody @Valid CompanyRequest companyRequest) {
+    public ResponseEntity<CompanyResponse> putCompany(@PathVariable Integer id,
+                                                      @RequestBody @Valid CompanyRequest companyRequest) {
+        if (companyService.isCompanyExist(id)) {
+            return ResponseEntity.notFound().build();
+        }
         return ResponseEntity.ok(new CompanyResponse(companyService.putCompany(id, companyRequest)));
     }
 
