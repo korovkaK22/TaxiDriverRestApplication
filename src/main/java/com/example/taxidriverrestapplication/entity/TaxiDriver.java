@@ -1,12 +1,11 @@
 package com.example.taxidriverrestapplication.entity;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 import lombok.*;
 import org.springframework.context.annotation.Lazy;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
 
 
 @NoArgsConstructor
@@ -17,6 +16,11 @@ import javax.validation.constraints.NotBlank;
 @EqualsAndHashCode
 @ToString
 @Table(name = "taxi_drivers")
+@NamedQuery(name = "TaxiDriver.findByCompanyAndAge",
+        query = "SELECT td FROM TaxiDriver td WHERE " +
+                "(:companyId IS NULL OR td.company.id = :companyId) AND " +
+                "(:minAge IS NULL OR td.age >= :minAge) AND " +
+                "(:maxAge IS NULL OR td.age <= :maxAge)")
 public class TaxiDriver {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,8 +29,12 @@ public class TaxiDriver {
     @NotBlank(message = "Name cannot be null or empty.")
     private String name;
 
-    @ManyToOne(fetch = FetchType.LAZY) // Встановлення взаємозв'язку між таблицями
-    @JoinColumn(name = "company_id", nullable = false) // Стовпець для зовнішнього ключа
+    @NotBlank(message = "Surname cannot be null or empty.")
+    private String surname;
+
+    @Nullable
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "company_id")
     private Company company;
 
     @Min(value = 18, message = "Age must be at least 18.")
