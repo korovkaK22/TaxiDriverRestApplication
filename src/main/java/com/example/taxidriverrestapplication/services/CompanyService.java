@@ -67,6 +67,13 @@ public class CompanyService {
         log.debug("Company with id %d deleted".formatted(id));
         return company;
     }
+
+
+    /**
+     * Initializes company fields from companyRequest
+     * @param companyRequest - request with company fields
+     * @param company - company to initialize
+     */
     private void initCompanyFields(CompanyRequest companyRequest, Company company) {
         company.setName(companyRequest.getName());
         company.setCountry(companyRequest.getCountry());

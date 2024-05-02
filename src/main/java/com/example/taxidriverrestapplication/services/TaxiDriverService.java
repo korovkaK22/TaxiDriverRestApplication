@@ -95,6 +95,7 @@ public class TaxiDriverService {
         TaxiDriverPaginationResponse response = new TaxiDriverPaginationResponse();
         response.addTaxiDrivers(page.getContent());
         response.setTotalPages(page.getTotalPages());
+        log.debug("Taxi drivers list returned for page %d".formatted(neededPage));
         return response;
     }
 
@@ -167,6 +168,12 @@ public class TaxiDriverService {
     }
 
 
+    /**
+     * Initialize fields of TaxiDriver entity from TaxiDriverRequest
+     *
+     * @param taxiDriverRequest TaxiDriverRequest
+     * @param taxiDriver        TaxiDriver
+     */
     private void initFields(TaxiDriverRequest taxiDriverRequest, TaxiDriver taxiDriver) {
         taxiDriver.setName(taxiDriverRequest.getName());
         taxiDriver.setSurname(taxiDriverRequest.getSurname());
