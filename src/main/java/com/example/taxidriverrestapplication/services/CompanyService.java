@@ -36,9 +36,7 @@ public class CompanyService {
         return companyRepository.findById(id);
     }
 
-    public boolean isCompanyExist(Integer id) {
-        return companyRepository.existsById(id);
-    }
+
 
     public Company putCompany(Integer id, CompanyRequest companyRequest) {
         Optional<Company> companyOpt = companyRepository.findById(id);
@@ -53,14 +51,21 @@ public class CompanyService {
 
         companyFromDb.setId(id);
         initCompanyFields(companyRequest, companyFromDb);
-        Company save = companyRepository.save(companyFromDb);
+        companyRepository.save(companyFromDb);
         log.debug("Company with id %d updated".formatted(id));
-        return save;
+        return companyFromDb;
     }
 
-    public void deleteCompany(Integer id) {
-        companyRepository.deleteById(id);
+    public Company deleteCompany(Integer id) {
+        Optional<Company> companyOpt = companyRepository.findById(id);
+
+        if (companyOpt.isEmpty()) {
+            throw new IllegalArgumentException("Company with id " + id + " not found");
+        }
+        Company company = companyOpt.get();
+        companyRepository.delete(company);
         log.debug("Company with id %d deleted".formatted(id));
+        return company;
     }
     private void initCompanyFields(CompanyRequest companyRequest, Company company) {
         company.setName(companyRequest.getName());

@@ -38,11 +38,8 @@ public class TaxiDriverService {
     private final Validator validator;
 
 
-    public boolean isTaxiDriverExist(Integer id) {
-        return taxiDriverRepository.existsById(id);
-    }
 
-    public TaxiDriver saveTaxiDriver(TaxiDriverRequest taxiDriverRequest) {
+    public TaxiDriver saveTaxiDriver(TaxiDriverRequest taxiDriverRequest) throws IllegalArgumentException {
         TaxiDriver taxiDriver = new TaxiDriver();
         initFields(taxiDriverRequest, taxiDriver);
         TaxiDriver save = taxiDriverRepository.save(taxiDriver);
@@ -71,12 +68,14 @@ public class TaxiDriverService {
     }
 
 
-    public void deleteTaxiDriver(Integer id) {
-        if (!taxiDriverRepository.existsById(id)) {
+    public TaxiDriver deleteTaxiDriver(Integer id) {
+        Optional<TaxiDriver> taxiDriverOpt = taxiDriverRepository.findById(id);
+        if (taxiDriverOpt.isEmpty()) {
             throw new IllegalArgumentException("Taxi driver with id %d not found".formatted(id));
         }
         taxiDriverRepository.deleteById(id);
         log.debug("Taxi driver with id %d deleted".formatted(id));
+        return taxiDriverOpt.get();
     }
 
     public TaxiDriverPaginationResponse getListOfTaxiDrivers(TaxiDriverPaginationFilterRequest request) {

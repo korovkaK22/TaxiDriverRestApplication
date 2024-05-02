@@ -26,6 +26,7 @@ public class CompanyResponse {
     private final int workingCarsAmount;
 
     public CompanyResponse(Company company) {
+
         this.id = company.getId();
         this.name = company.getName();
         this.country = company.getCountry();

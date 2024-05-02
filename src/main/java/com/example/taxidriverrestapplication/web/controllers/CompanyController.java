@@ -1,5 +1,6 @@
 package com.example.taxidriverrestapplication.web.controllers;
 
+import com.example.taxidriverrestapplication.entity.Company;
 import com.example.taxidriverrestapplication.services.CompanyService;
 import com.example.taxidriverrestapplication.web.dto.company.CompanyRequest;
 import com.example.taxidriverrestapplication.web.dto.company.CompanyResponse;
@@ -38,16 +39,21 @@ public class CompanyController {
     @PutMapping("/{id}")
     public ResponseEntity<CompanyResponse> putCompany(@PathVariable Integer id,
                                                       @RequestBody @Valid CompanyRequest companyRequest) {
-        if (companyService.isCompanyExist(id)) {
+        try {
+            return ResponseEntity.ok(new CompanyResponse(companyService.putCompany(id, companyRequest)));
+        } catch (IllegalArgumentException e) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(new CompanyResponse(companyService.putCompany(id, companyRequest)));
+
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteCompany(@PathVariable Integer id) {
-        companyService.deleteCompany(id);
-        return ResponseEntity.ok().build();
+        try {
+            return ResponseEntity.ok().body(new CompanyResponse(companyService.deleteCompany(id)));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
 }

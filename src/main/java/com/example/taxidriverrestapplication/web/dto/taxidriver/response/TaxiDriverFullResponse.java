@@ -1,5 +1,6 @@
 package com.example.taxidriverrestapplication.web.dto.taxidriver.response;
 
+import com.example.taxidriverrestapplication.entity.Company;
 import com.example.taxidriverrestapplication.entity.TaxiDriver;
 import com.example.taxidriverrestapplication.web.dto.company.CompanyResponse;
 import lombok.Data;
@@ -23,7 +24,10 @@ public class TaxiDriverFullResponse {
         this.age = taxiDriver.getAge();
         this.name = taxiDriver.getName();
         this.surname = taxiDriver.getSurname();
-        this.company = new CompanyResponse(taxiDriver.getCompany());
+        Company company = taxiDriver.getCompany();
+        if (company != null) {
+            this.company = new CompanyResponse(company);
+        }
         this.drivingExperience = taxiDriver.getDrivingExperience();
         this.salary = taxiDriver.getSalary();
         this.cars = taxiDriver.getCars();

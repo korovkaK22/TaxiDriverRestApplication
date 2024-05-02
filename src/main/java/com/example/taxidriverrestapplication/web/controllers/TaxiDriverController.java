@@ -38,32 +38,41 @@ public class TaxiDriverController {
 
     @PostMapping()
     public ResponseEntity<TaxiDriverFullResponse> saveTaxiDriver(@Valid @RequestBody TaxiDriverRequest taxiDriverRequest) {
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(new TaxiDriverFullResponse(taxiDriverService.saveTaxiDriver(taxiDriverRequest)));
-
+        try {
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body(new TaxiDriverFullResponse(taxiDriverService.saveTaxiDriver(taxiDriverRequest)));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
-
 
     @GetMapping("/{id}")
     public ResponseEntity<TaxiDriverFullResponse> getTaxiDriver(@PathVariable Integer id) {
-        return ResponseEntity.ok(new TaxiDriverFullResponse(taxiDriverService.getTaxiDriver(id)));
+        try {
+            return ResponseEntity.ok(new TaxiDriverFullResponse(taxiDriverService.getTaxiDriver(id)));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<TaxiDriverResponse> updateTaxiDriver(@PathVariable Integer id,
                                                                @Valid @RequestBody TaxiDriverRequest taxiDriverRequest) {
-        if (taxiDriverService.isTaxiDriverExist(id)) {
-            return ResponseEntity.notFound().build();
-        }
-
-        return ResponseEntity.ok(new TaxiDriverResponse(taxiDriverService.updateTaxiDriver(id, taxiDriverRequest)));
+       try {
+           return ResponseEntity.ok(new TaxiDriverResponse(taxiDriverService.updateTaxiDriver(id, taxiDriverRequest)));
+       } catch (IllegalArgumentException e) {
+           return ResponseEntity.notFound().build();
+       }
     }
 
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteTaxiDriver(@PathVariable Integer id) {
-        taxiDriverService.deleteTaxiDriver(id);
-        return ResponseEntity.ok().build();
+        try {
+            return ResponseEntity.ok().body(new TaxiDriverResponse(taxiDriverService.deleteTaxiDriver(id)));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
 
