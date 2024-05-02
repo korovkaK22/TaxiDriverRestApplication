@@ -11,6 +11,7 @@
 Our project features two primary entities: companies and taxi drivers.
 These entities are represented in the system in a JSON format. 
 
+
 ```json
 {
   "name" : "Verlie",
