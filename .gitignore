@@ -31,3 +31,6 @@ build/
 
 ### VS Code ###
 .vscode/
+/src/main/java/com/example/taxidriverrestapplication/delllll/Main.java
+/src/main/java/com/example/taxidriverrestapplication/delllll/TaxiDriverCreator.java
+/src/main/java/com/example/taxidriverrestapplication/delllll/TaxiDriverJsonFileCreator.java
