@@ -9,7 +9,6 @@ phases:
       - REPOSITORY_URI=637423312585.dkr.ecr.eu-north-1.amazonaws.com/internatura
       - echo setting image tag...
       - IMAGE_TAG=build-$(echo $CODEBUILD_BUILD_ID | awk -F":" '{print $2}')
-      - git checkout -b task5
   build:
     commands:
       - echo building and tagging started image on `date`
