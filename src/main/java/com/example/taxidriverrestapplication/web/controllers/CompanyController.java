@@ -1,7 +1,6 @@
 package com.example.taxidriverrestapplication.web.controllers;
 
 import com.example.taxidriverrestapplication.services.CompanyService;
-import com.example.taxidriverrestapplication.services.EmailCompanySenderService;
 import com.example.taxidriverrestapplication.web.dto.company.CompanyRequest;
 import com.example.taxidriverrestapplication.web.dto.company.CompanyResponse;
 import jakarta.annotation.PostConstruct;
@@ -21,16 +20,6 @@ import java.util.List;
 @RequestMapping("/api/company")
 public class CompanyController {
     private final CompanyService companyService;
-    private final EmailCompanySenderService emailCompanySenderService;
-
-    @Value("${spring.mail.receivers}")
-    private String receiversString;
-    private List<String> receivers;
-
-    @PostConstruct
-    public void init() {
-        receivers = Arrays.stream(receiversString.split(",")).toList();
-    }
 
     @GetMapping()
     public ResponseEntity<List<CompanyResponse>> getAllCompanies() {
@@ -40,7 +29,6 @@ public class CompanyController {
     @PostMapping()
     public ResponseEntity<CompanyResponse> addCompany(@RequestBody @Valid CompanyRequest companyRequest) {
         CompanyResponse savedCompany = new CompanyResponse(companyService.addCompany(companyRequest));
-        emailCompanySenderService.createCompanyEmail(companyRequest.getName(), receivers);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedCompany);
     }
 
@@ -56,7 +44,6 @@ public class CompanyController {
             }
 
             CompanyResponse updatedCompany = new CompanyResponse(companyService.putCompany(id, companyRequest));
-            emailCompanySenderService.updateCompanyEmail(oldName, companyRequest.getName(), receivers);
             return ResponseEntity.ok(updatedCompany);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.notFound().build();
@@ -67,7 +54,6 @@ public class CompanyController {
     public ResponseEntity<?> deleteCompany(@PathVariable Integer id) {
         try {
             CompanyResponse deletedCompany = new CompanyResponse(companyService.deleteCompany(id));
-            emailCompanySenderService.deleteCompanyEmail(deletedCompany.getName(), receivers);
             return ResponseEntity.ok().body(deletedCompany);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.notFound().build();
