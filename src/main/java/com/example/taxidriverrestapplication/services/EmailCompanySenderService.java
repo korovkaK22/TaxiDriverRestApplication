@@ -6,7 +6,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.core.KafkaOperations;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 
 @Service
@@ -35,7 +37,7 @@ public class EmailCompanySenderService {
                 .subject(EMAIL_CREATED_SUBJECT)
                 .content(EMAIL_CREATED_CONTENT + companyName)
                 .receivers(receivers)
-                .lastAttempt(LocalDateTime.now())
+                .lastAttempt(Instant.now())
                 .build();
         try {
             kafkaOperations.send(TOPIC, KEY, emailMessage);
@@ -50,7 +52,7 @@ public class EmailCompanySenderService {
                 .subject(EMAIL_UPDATED_SUBJECT)
                 .content(EMAIL_UPDATED_CONTENT + oldName + EMAIL_UPDATED_CONTENT_TO + newName)
                 .receivers(receivers)
-                .lastAttempt(LocalDateTime.now())
+                .lastAttempt(Instant.now())
                 .build();
         try {
             kafkaOperations.send(TOPIC, KEY, emailMessage);
@@ -65,7 +67,7 @@ public class EmailCompanySenderService {
                 .subject(EMAIL_DELETED_SUBJECT)
                 .content(EMAIL_DELETED_CONTENT + companyName + EMAIL_DELETED_CONTENT_SUFFIX)
                 .receivers(receivers)
-                .lastAttempt(LocalDateTime.now())
+                .lastAttempt(Instant.now())
                 .build();
         try {
             kafkaOperations.send(TOPIC, KEY, emailMessage);

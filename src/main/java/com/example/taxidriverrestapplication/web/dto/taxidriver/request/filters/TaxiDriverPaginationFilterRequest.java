@@ -12,8 +12,6 @@ import lombok.RequiredArgsConstructor;
 @AllArgsConstructor
 public class TaxiDriverPaginationFilterRequest extends TaxiDriverFilterRequest{
 
-
-
     @NotNull(message = "Page cannot be null or empty.")
     Integer page;
     @NotNull(message = "Size cannot be null or empty.")
