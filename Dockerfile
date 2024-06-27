@@ -12,4 +12,5 @@ FROM openjdk:17-jdk
 WORKDIR /app
 COPY --from=build /app/target/*.jar app.jar
 EXPOSE 8081
+EXPOSE 5432
 CMD ["java", "-jar", "app.jar"]
