@@ -9,6 +9,8 @@ import com.example.taxidriverrestapplication.web.dto.taxidriver.request.TaxiDriv
 import com.example.taxidriverrestapplication.web.dto.taxidriver.response.TaxiDriverFullResponse;
 import com.example.taxidriverrestapplication.web.dto.taxidriver.response.TaxiDriverResponse;
 import com.example.taxidriverrestapplication.web.dto.taxidriver.response.TaxiDriverShortResponse;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +32,7 @@ import java.util.List;
 @Slf4j
 @Controller
 @RequestMapping("/api/taxi-driver")
+@Tag(name = "Taxi Driver Management", description = "Operations related to managing taxi drivers")
 public class TaxiDriverController {
 
     private final TaxiDriverService taxiDriverService;
@@ -40,11 +43,13 @@ public class TaxiDriverController {
     }
 
     @GetMapping()
+    @Operation(summary = "Get all taxi drivers", description = "Retrieve a list of all taxi drivers")
     public ResponseEntity<List<TaxiDriverFullResponse>> getAllTaxiDrivers() {
         return ResponseEntity.ok(taxiDriverService.getAllTaxiDrivers());
     }
 
     @PostMapping()
+    @Operation(summary = "Add a new taxi driver", description = "Create a new taxi driver with the provided details")
     public ResponseEntity<TaxiDriverFullResponse> saveTaxiDriver(@Valid @RequestBody TaxiDriverRequest taxiDriverRequest) {
         try {
             return ResponseEntity.status(HttpStatus.CREATED)
@@ -55,6 +60,7 @@ public class TaxiDriverController {
     }
 
     @GetMapping("/{id}")
+    @Operation(summary = "Get a taxi driver by ID", description = "Retrieve a specific taxi driver by ID")
     public ResponseEntity<TaxiDriverFullResponse> getTaxiDriver(@PathVariable Integer id) {
         try {
             return ResponseEntity.ok(new TaxiDriverFullResponse(taxiDriverService.getTaxiDriver(id)));
@@ -64,6 +70,7 @@ public class TaxiDriverController {
     }
 
     @PutMapping("/{id}")
+    @Operation(summary = "Update a taxi driver", description = "Update the details of an existing taxi driver by ID")
     public ResponseEntity<TaxiDriverResponse> updateTaxiDriver(@PathVariable Integer id,
                                                                @Valid @RequestBody TaxiDriverRequest taxiDriverRequest) {
        try {
@@ -75,6 +82,7 @@ public class TaxiDriverController {
 
 
     @DeleteMapping("/{id}")
+    @Operation(summary = "Delete a taxi driver", description = "Delete an existing taxi driver by ID")
     public ResponseEntity<?> deleteTaxiDriver(@PathVariable Integer id) {
         try {
             return ResponseEntity.ok().body(new TaxiDriverResponse(taxiDriverService.deleteTaxiDriver(id)));
@@ -86,6 +94,7 @@ public class TaxiDriverController {
 
 
     @PostMapping("/_list")
+    @Operation(summary = "Get list of taxi drivers with pagination", description = "Retrieve a paginated list of taxi drivers")
     public ResponseEntity<?> getListOfTaxiDrivers(@Valid @RequestBody TaxiDriverPaginationFilterRequest request) {
         try {
             return ResponseEntity.ok(taxiDriverService.getListOfTaxiDrivers(request));
@@ -95,6 +104,7 @@ public class TaxiDriverController {
     }
 
     @PostMapping("/_report")
+    @Operation(summary = "Download taxi driver report", description = "Generate and download a report of taxi drivers")
     public ResponseEntity<Void> downloadTaxiDriverReport(TaxiDriverFilterRequest request, HttpServletResponse response) throws IOException {
         List<TaxiDriverShortResponse> drivers = taxiDriverService.getReportOfTaxiDrivers(request);
         response.setContentType("text/csv");
@@ -109,6 +119,7 @@ public class TaxiDriverController {
     }
 
     @PostMapping("/upload")
+    @Operation(summary = "Upload taxi drivers from a file", description = "Upload taxi drivers from a JSON file")
     public ResponseEntity<?> uploadTaxiDrivers(@RequestParam("file") MultipartFile file) {
         if (file.isEmpty()) {
             log.warn("File with drivers is empty");
