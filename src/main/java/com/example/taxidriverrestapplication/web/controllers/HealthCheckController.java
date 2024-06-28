@@ -1,10 +1,11 @@
 package com.example.taxidriverrestapplication.web.controllers;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.GetMapping;
 
-@Repository
+@Controller
 public class HealthCheckController {
 
     @GetMapping("/health")
