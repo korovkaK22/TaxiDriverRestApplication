@@ -1,5 +1,6 @@
 package com.example.taxidriverrestapplication.web.controllers;
 
+import com.example.taxidriverrestapplication.entity.TaxiDriver;
 import com.example.taxidriverrestapplication.services.TaxiDriverService;
 import com.example.taxidriverrestapplication.web.dto.UploadJsonEntitiesResponse;
 import com.example.taxidriverrestapplication.web.dto.taxidriver.request.filters.TaxiDriverFilterRequest;
@@ -14,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+
 
 @Slf4j
 @Controller
@@ -34,6 +37,11 @@ public class TaxiDriverController {
     @Autowired
     public TaxiDriverController(TaxiDriverService taxiDriverService) {
         this.taxiDriverService = taxiDriverService;
+    }
+
+    @GetMapping()
+    public ResponseEntity<List<TaxiDriverFullResponse>> getAllTaxiDrivers() {
+        return ResponseEntity.ok(taxiDriverService.getAllTaxiDrivers());
     }
 
     @PostMapping()
