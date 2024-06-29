@@ -6,9 +6,9 @@ import com.example.taxidriverrestapplication.repositories.TaxiDriverRepository;
 import com.example.taxidriverrestapplication.web.dto.UploadJsonEntitiesResponse;
 import com.example.taxidriverrestapplication.web.dto.taxidriver.request.filters.TaxiDriverFilterRequest;
 import com.example.taxidriverrestapplication.web.dto.taxidriver.request.filters.TaxiDriverPaginationFilterRequest;
-import com.example.taxidriverrestapplication.web.dto.taxidriver.response.TaxiDriverFullResponse;
 import com.example.taxidriverrestapplication.web.dto.taxidriver.response.TaxiDriverPaginationResponse;
 import com.example.taxidriverrestapplication.web.dto.taxidriver.request.TaxiDriverRequest;
+import com.example.taxidriverrestapplication.web.dto.taxidriver.response.TaxiDriverResponse;
 import com.example.taxidriverrestapplication.web.dto.taxidriver.response.TaxiDriverShortResponse;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
@@ -39,8 +39,8 @@ public class TaxiDriverService {
     private final Validator validator;
 
 
-    public List<TaxiDriverFullResponse> getAllTaxiDrivers() {
-        return taxiDriverRepository.findAll().stream().map(TaxiDriverFullResponse::new).toList();
+    public List<TaxiDriverResponse> getAllTaxiDrivers() {
+        return taxiDriverRepository.findAll().stream().map(TaxiDriverResponse::new).toList();
     }
 
 

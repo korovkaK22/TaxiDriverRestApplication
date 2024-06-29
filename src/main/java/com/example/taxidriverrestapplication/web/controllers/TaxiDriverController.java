@@ -1,12 +1,10 @@
 package com.example.taxidriverrestapplication.web.controllers;
 
-import com.example.taxidriverrestapplication.entity.TaxiDriver;
 import com.example.taxidriverrestapplication.services.TaxiDriverService;
 import com.example.taxidriverrestapplication.web.dto.UploadJsonEntitiesResponse;
 import com.example.taxidriverrestapplication.web.dto.taxidriver.request.filters.TaxiDriverFilterRequest;
 import com.example.taxidriverrestapplication.web.dto.taxidriver.request.filters.TaxiDriverPaginationFilterRequest;
 import com.example.taxidriverrestapplication.web.dto.taxidriver.request.TaxiDriverRequest;
-import com.example.taxidriverrestapplication.web.dto.taxidriver.response.TaxiDriverFullResponse;
 import com.example.taxidriverrestapplication.web.dto.taxidriver.response.TaxiDriverResponse;
 import com.example.taxidriverrestapplication.web.dto.taxidriver.response.TaxiDriverShortResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -17,7 +15,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -44,16 +41,16 @@ public class TaxiDriverController {
 
     @GetMapping()
     @Operation(summary = "Get all taxi drivers", description = "Retrieve a list of all taxi drivers")
-    public ResponseEntity<List<TaxiDriverFullResponse>> getAllTaxiDrivers() {
+    public ResponseEntity<List<TaxiDriverResponse>> getAllTaxiDrivers() {
         return ResponseEntity.ok(taxiDriverService.getAllTaxiDrivers());
     }
 
     @PostMapping()
     @Operation(summary = "Add a new taxi driver", description = "Create a new taxi driver with the provided details")
-    public ResponseEntity<TaxiDriverFullResponse> saveTaxiDriver(@Valid @RequestBody TaxiDriverRequest taxiDriverRequest) {
+    public ResponseEntity<TaxiDriverResponse> saveTaxiDriver(@Valid @RequestBody TaxiDriverRequest taxiDriverRequest) {
         try {
             return ResponseEntity.status(HttpStatus.CREATED)
-                    .body(new TaxiDriverFullResponse(taxiDriverService.saveTaxiDriver(taxiDriverRequest)));
+                    .body(new TaxiDriverResponse(taxiDriverService.saveTaxiDriver(taxiDriverRequest)));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().build();
         }
@@ -61,9 +58,9 @@ public class TaxiDriverController {
 
     @GetMapping("/{id}")
     @Operation(summary = "Get a taxi driver by ID", description = "Retrieve a specific taxi driver by ID")
-    public ResponseEntity<TaxiDriverFullResponse> getTaxiDriver(@PathVariable Integer id) {
+    public ResponseEntity<TaxiDriverResponse> getTaxiDriver(@PathVariable Integer id) {
         try {
-            return ResponseEntity.ok(new TaxiDriverFullResponse(taxiDriverService.getTaxiDriver(id)));
+            return ResponseEntity.ok(new TaxiDriverResponse(taxiDriverService.getTaxiDriver(id)));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.notFound().build();
         }
