@@ -13,7 +13,8 @@ public class WebCorsConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins("http://localhost:5173", "http://localhost:3000", "http://localhost:8080",
+                        .allowedOrigins("https://aws.d1ihcjsws86zxy.amplifyapp.com",
+                                "http://localhost:3000", "http://localhost:8080",
                                 "http://localhost:3050")
                         .allowedMethods("*")
                         .allowedHeaders("*")

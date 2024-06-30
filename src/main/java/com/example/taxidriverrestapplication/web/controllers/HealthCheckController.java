@@ -19,6 +19,6 @@ public class HealthCheckController {
     @GetMapping("/version")
     @Operation(summary = "Health check", description = "Check the health status of the application")
     public ResponseEntity<Integer> versionCheck() {
-        return ResponseEntity.ok(3);
+        return ResponseEntity.ok(4);
     }
 }
