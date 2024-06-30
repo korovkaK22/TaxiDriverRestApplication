@@ -29,6 +29,7 @@ public class TaxiDriverResponse {
         this.drivingExperience = taxiDriver.getDrivingExperience();
         this.salary = taxiDriver.getSalary();
         this.cars = taxiDriver.getCars();
+        this.age = taxiDriver.getAge();
     }
 
 
