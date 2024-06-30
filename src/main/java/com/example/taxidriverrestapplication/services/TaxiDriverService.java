@@ -40,7 +40,7 @@ public class TaxiDriverService {
 
 
     public List<TaxiDriverResponse> getAllTaxiDrivers() {
-        return taxiDriverRepository.findAll().stream().map(TaxiDriverResponse::new).toList();
+        return taxiDriverRepository.findAll().stream().map(TaxiDriverResponse::new).sorted().toList();
     }
 
 

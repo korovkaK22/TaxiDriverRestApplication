@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 @Data
 @RequiredArgsConstructor
 @AllArgsConstructor
-public class TaxiDriverResponse {
+public class TaxiDriverResponse implements Comparable<TaxiDriverResponse> {
     private Integer id;
     private String name;
     private String surname;
@@ -19,18 +19,20 @@ public class TaxiDriverResponse {
     private Long salary;
     private String cars;
 
-
     public TaxiDriverResponse(TaxiDriver taxiDriver) {
         this.id = taxiDriver.getId();
         this.name = taxiDriver.getName();
         this.surname = taxiDriver.getSurname();
         Company company = taxiDriver.getCompany();
-        this.companyId = company== null? null: company.getId();
+        this.companyId = company == null ? null : company.getId();
         this.drivingExperience = taxiDriver.getDrivingExperience();
         this.salary = taxiDriver.getSalary();
         this.cars = taxiDriver.getCars();
         this.age = taxiDriver.getAge();
     }
 
-
+    @Override
+    public int compareTo(TaxiDriverResponse other) {
+        return this.id.compareTo(other.id);
+    }
 }
